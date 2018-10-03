@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { NEW_CARGA, SELECT_CARGA, ADD_ITEM } from '../actions/cargas.actions';
+import { NEW_CARGA, SELECT_CARGA, ADD_ITEM, EDIT_ITEM } from '../actions/cargas.actions';
 
 export default selectedCargaReducer = (state = {}, action) => {
     switch (action.type) {
@@ -10,6 +10,12 @@ export default selectedCargaReducer = (state = {}, action) => {
             return action.payload;
         case ADD_ITEM:
             return { ...state, items: [...state.items, action.payload] };
+        case EDIT_ITEM:
+            const i = state.items.findIndex(item => action.payload.id === item.id);
+            const items = state.items;
+            items[i] = action.payload;
+
+            return { ...state, items };
     }
     return state;
 };

@@ -3,16 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { addItem } from '../redux/actions/cargas.actions';
-
-const hojas = [
-    { id: 1, chofer: 'Maximiliano Bisurgi' },
-    { id: 2, chofer: 'Jorge Perez' },
-    { id: 3, chofer: 'Manolo Espinola' },
-    { id: 4, chofer: 'Carlos Gutierrez' },
-    { id: 5, chofer: 'Esteban Jauri' },
-    { id: 6, chofer: 'Claudio Sabella' },
-]
+import { addItem, editItem } from '../redux/actions/cargas.actions';
 
 class CargaFormScreen extends React.Component {
     state = {
@@ -26,22 +17,44 @@ class CargaFormScreen extends React.Component {
         headerBackTitle: null
     };
 
+    componentDidMount() {
+        const item = this.props.navigation.getParam('item', null);
+
+        if (item) {
+            this.setState({ lleno: item.lleno.toString(), vacio: item.vacio.toString(), averiado: item.averiado.toString() });
+        }
+    };
+
     onAgregarPress = () => {
-        this.props.addItem(this.createItem());
+        const item = this.props.navigation.getParam('item', null);
+
+        if (item) {
+            this.props.editItem(this.createItem(item));
+        } else {
+            this.props.addItem(this.createItem());
+        }
+
         this.props.navigation.navigate('Detalle');
     };
 
-    createItem = () => {
+    createItem = (item = null) => {
         const envase = this.props.navigation.getParam('envase');
-        const item = {
-            envase,
-            lleno: isNaN(parseInt(this.state.lleno, 10)) ? 0 : parseInt(this.state.lleno, 10),
-            vacio: isNaN(parseInt(this.state.vacio, 10)) ? 0 : parseInt(this.state.vacio, 10),
-            averiado: isNaN(parseInt(this.state.averiado, 10)) ? 0 : parseInt(this.state.averiado, 10),
-            retiro: 0,
-            entrega: 0,
-            cambio: 0
-        };
+
+        if (item) {
+            item.lleno = isNaN(parseInt(this.state.lleno, 10)) ? 0 : parseInt(this.state.lleno, 10);
+            item.vacio = isNaN(parseInt(this.state.vacio, 10)) ? 0 : parseInt(this.state.vacio, 10);
+            item.averiado = isNaN(parseInt(this.state.averiado, 10)) ? 0 : parseInt(this.state.averiado, 10);
+        } else {
+            item = {
+                envase,
+                lleno: isNaN(parseInt(this.state.lleno, 10)) ? 0 : parseInt(this.state.lleno, 10),
+                vacio: isNaN(parseInt(this.state.vacio, 10)) ? 0 : parseInt(this.state.vacio, 10),
+                averiado: isNaN(parseInt(this.state.averiado, 10)) ? 0 : parseInt(this.state.averiado, 10),
+                retiro: 0,
+                entrega: 0,
+                cambio: 0
+            };
+        }
 
         return item;
     };
@@ -72,4 +85,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(null, { addItem })(CargaFormScreen);
+export default connect(null, { addItem, editItem })(CargaFormScreen);

@@ -7,6 +7,7 @@ export const LIST_CARGAS_DONE = 'LIST_CARGAS_DONE';
 export const NEW_CARGA = 'NEW_CARGA';
 export const SELECT_CARGA = 'SELECT_CARGA';
 export const ADD_ITEM = 'ADD_ITEM';
+export const EDIT_ITEM = 'EDIT_ITEM';
 
 export const list = (hojaId) => {
     return async (dispatch) => {
@@ -71,6 +72,13 @@ export const selectCarga = (carga) => {
 export const addItem = (item) => {
     return {
         type: ADD_ITEM,
+        payload: item
+    }
+};
+
+export const editItem = (item) => {
+    return {
+        type: EDIT_ITEM,
         payload: item
     }
 };

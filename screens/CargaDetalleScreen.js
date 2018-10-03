@@ -33,6 +33,7 @@ class CargaDetalleScreen extends React.Component {
 
     onItemPress = (item) => {
         console.log(item);
+        this.props.navigation.navigate('Form', { item });
     };
 
     renderItem = ({ item }) => (

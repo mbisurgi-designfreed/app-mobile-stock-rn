@@ -5,15 +5,26 @@ import { connect } from 'react-redux';
 
 import CustomList from '../components/CustomList';
 
+import { add } from '../redux/actions/cargas.actions';
+
 class CargaDetalleScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: `Detalle - ${navigation.getParam('tipo').sigla}`,
             headerBackTitle: null,
             headerRight: (
-                <Icon name='ios-checkmark-circle-outline' type='ionicon' color='#0067AC' size={26} containerStyle={{ marginRight: 20 }} onPress={() => console.log('hello')} />
+                <Icon name='ios-checkmark-circle-outline' type='ionicon' color='#0067AC' size={26} containerStyle={{ marginRight: 20 }} onPress={navigation.getParam('addCarga')} />
             )
         };
+    };
+
+    componentDidMount() {
+        this.props.navigation.setParams({ addCarga: this.onAddPress });
+    };
+
+    onAddPress = () => {
+        this.props.add(this.props.carga);
+        this.props.navigation.navigate('Home');
     };
 
     onAgregarPress = () => {
@@ -81,4 +92,4 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({ carga: state.carga });
 
-export default connect(mapStateToProps)(CargaDetalleScreen);
+export default connect(mapStateToProps, { add })(CargaDetalleScreen);

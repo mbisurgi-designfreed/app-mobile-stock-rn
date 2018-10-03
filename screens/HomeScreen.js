@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ListItem } from 'react-native-elements'
+import moment from 'moment';
 import axios from 'axios';
 
 import CustomList from '../components/CustomList';
@@ -18,7 +19,9 @@ export default class HomeScreen extends React.Component {
     };
 
     componentDidMount() {
-        axios.get('http://bybgas.dyndns.org:8080/distribuidoras-backend/hojaRuta/findByFecha/1538449200000')
+        const date = moment(new Date()).hour(0).minute(0).second(0).millisecond(0).valueOf();
+
+        axios.get(`http://bybgas.dyndns.org:8080/distribuidoras-backend/hojaRuta/findByFecha/${date}`)
             .then((res) => {
                 this.setState({ hojas: res.data, loading: false });
             });

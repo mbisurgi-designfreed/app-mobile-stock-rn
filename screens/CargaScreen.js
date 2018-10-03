@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import CustomList from '../components/CustomList';
 import Spinner from '../components/Spinner';
 
-import { list, add, select } from '../redux/actions/cargas.actions';
+import { list, newCarga, selectCarga } from '../redux/actions/cargas.actions';
 
 const TIPOS = [
     { id: 1, sigla: 'CI' },
@@ -39,9 +39,9 @@ class CargaScreen extends React.Component {
         const carga = this.props.cargas.find((carga) => carga.tipo.id === item.id);
 
         if (carga) {
-            this.props.select(carga);
+            this.props.selectCarga(carga);
         } else {
-            this.props.add(item, hoja);
+            this.props.newCarga(item, hoja);
         }
 
         this.props.navigation.navigate('Detalle', { tipo: item });
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({ loading: state.cargas.loading, cargas: state.cargas.cargas });
 
-export default connect(mapStateToProps, { list, add, select })(CargaScreen);
+export default connect(mapStateToProps, { list, newCarga, selectCarga })(CargaScreen);

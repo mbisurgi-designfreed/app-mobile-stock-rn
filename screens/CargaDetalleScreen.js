@@ -32,7 +32,6 @@ class CargaDetalleScreen extends React.Component {
     };
 
     onItemPress = (item) => {
-        console.log(item);
         this.props.navigation.navigate('Form', { item });
     };
 
@@ -46,6 +45,11 @@ class CargaDetalleScreen extends React.Component {
                     <Text style={styles.label}>Lleno: <Text style={styles.amount}>{item.lleno}</Text></Text>
                     <Text style={styles.label}>Vacio: <Text style={styles.amount}>{item.vacio}</Text></Text>
                     <Text style={styles.label}>Averiado: <Text style={styles.amount}>{item.averiado}</Text></Text>
+                </View>
+                <View style={styles.list}>
+                    <Text style={styles.label}>Retiro: <Text style={styles.amount}>{item.retiro}</Text></Text>
+                    <Text style={styles.label}>Entrega: <Text style={styles.amount}>{item.entrega}</Text></Text>
+                    <Text style={styles.label}>Cambio: <Text style={styles.amount}>{item.cambio}</Text></Text>
                 </View>
             </View>
         } onPress={() => this.onItemPress(item)}

@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native';
-import { List, ListItem } from 'react-native-elements'
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { ListItem } from 'react-native-elements'
 import { connect } from 'react-redux';
+
+import CustomList from '../components/CustomList';
+import Spinner from '../components/Spinner';
 
 import { list, add, select } from '../redux/actions/cargas.actions';
 
@@ -26,9 +29,7 @@ class CargaScreen extends React.Component {
     isLoading = (loading) => {
         if (loading) {
             return (
-                <View style={styles.spinner}>
-                    <ActivityIndicator size="large" color="#0067AC" />
-                </View>
+                <Spinner />
             )
         }
     };
@@ -46,18 +47,14 @@ class CargaScreen extends React.Component {
         this.props.navigation.navigate('Detalle', { tipo: item });
     };
 
-    renderItem = ({ item }) => {
-        return (
-            <ListItem title={item.sigla} onPress={() => this.onItemPress(item)} />
-        )
-    };
+    renderItem = ({ item }) => (
+        <ListItem title={item.sigla} onPress={() => this.onItemPress(item)} />
+    );
 
     render() {
         return (
             <View style={styles.container}>
-                <List containerStyle={{ marginTop: 0 }}>
-                    <FlatList data={TIPOS} renderItem={this.renderItem} keyExtractor={item => item.id.toString()} />
-                </List>
+                <CustomList data={TIPOS} renderItem={this.renderItem} keyExtractor={item => item.id.toString()} />
                 {this.isLoading(this.props.loading)}
             </View>
         )
@@ -68,17 +65,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff'
-    },
-    spinner: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        opacity: 0.5,
-        backgroundColor: 'black',
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
 

@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Icon, List, ListItem, Button } from 'react-native-elements'
+import { StyleSheet, Text, View } from 'react-native';
+import { Icon, ListItem, Button } from 'react-native-elements'
 import { connect } from 'react-redux';
+
+import CustomList from '../components/CustomList';
 
 class CargaDetalleScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -14,10 +16,6 @@ class CargaDetalleScreen extends React.Component {
         };
     };
 
-    componentDidMount() {
-        console.log('componentDidMount()');
-    };
-
     onAgregarPress = () => {
         this.props.navigation.navigate('Envases');
     };
@@ -26,30 +24,26 @@ class CargaDetalleScreen extends React.Component {
         console.log(item);
     };
 
-    renderItem = ({ item }) => {
-        return (
-            <ListItem hideChevron title={
+    renderItem = ({ item }) => (
+        <ListItem hideChevron title={
+            <View>
                 <View>
-                    <View>
-                        <Text style={styles.title}>{item.envase.envaseNombre}</Text>
-                    </View>
-                    <View style={styles.list}>
-                        <Text style={styles.label}>Lleno: <Text style={styles.amount}>{item.lleno}</Text></Text>
-                        <Text style={styles.label}>Vacio: <Text style={styles.amount}>{item.vacio}</Text></Text>
-                        <Text style={styles.label}>Averiado: <Text style={styles.amount}>{item.averiado}</Text></Text>
-                    </View>
+                    <Text style={styles.title}>{item.envase.envaseNombre}</Text>
                 </View>
-            } onPress={() => this.onItemPress(item)}
-            />
-        )
-    };
+                <View style={styles.list}>
+                    <Text style={styles.label}>Lleno: <Text style={styles.amount}>{item.lleno}</Text></Text>
+                    <Text style={styles.label}>Vacio: <Text style={styles.amount}>{item.vacio}</Text></Text>
+                    <Text style={styles.label}>Averiado: <Text style={styles.amount}>{item.averiado}</Text></Text>
+                </View>
+            </View>
+        } onPress={() => this.onItemPress(item)}
+        />
+    );
 
     render() {
-        return (            
+        return (
             <View style={styles.container}>
-                <List containerStyle={{ marginTop: 0 }}>
-                    <FlatList data={this.props.carga.items} extraData={this.props.carga} renderItem={this.renderItem} keyExtractor={item => item.envase.id.toString()} />
-                </List>
+                <CustomList data={this.props.carga.items} extraData={this.props.carga} renderItem={this.renderItem} keyExtractor={item => item.envase.id.toString()} />
                 <Button icon={{ name: 'ios-add-circle-outline', type: 'ionicon', size: 26 }} containerViewStyle={{ marginBottom: 20 }} backgroundColor='#0067AC' borderRadius={5} onPress={this.onAgregarPress} />
             </View>
         )

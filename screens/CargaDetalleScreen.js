@@ -1,45 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { Icon, List, ListItem, Button } from 'react-native-elements'
+import { connect } from 'react-redux';
 
-const CARGA = {
-    id: 1,
-    tipo: {
-        id: 1,
-        sigla: 'CI'
-    },
-    items: [
-        {
-            id: 1,
-            envase: {
-                id: 1,
-                envaseNombre: 'Garrafa 10kg'
-            },
-            lleno: 240,
-            vacio: 5,
-            averiado: 2,
-            retiro: 0,
-            entrega: 0,
-            cambio: 0
-        },
-        {
-            id: 2,
-            envase: {
-                id: 2,
-                envaseNombre: 'Garrafa 15kg'
-            },
-            lleno: 14,
-            vacio: 130,
-            averiado: 2,
-            retiro: 0,
-            entrega: 0,
-            cambio: 0
-        }
-    ]
-}
-
-
-export default class CargaDetalleScreen extends React.Component {
+class CargaDetalleScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: `Detalle - ${navigation.getParam('tipo').sigla}`,
@@ -48,6 +12,10 @@ export default class CargaDetalleScreen extends React.Component {
                 <Icon name='ios-checkmark-circle-outline' type='ionicon' color='#0067AC' size={26} containerStyle={{ marginRight: 20 }} onPress={() => console.log('hello')} />
             )
         };
+    };
+
+    componentDidMount() {
+        console.log('componentDidMount()');
     };
 
     onAgregarPress = () => {
@@ -77,10 +45,10 @@ export default class CargaDetalleScreen extends React.Component {
     };
 
     render() {
-        return (
+        return (            
             <View style={styles.container}>
                 <List containerStyle={{ marginTop: 0 }}>
-                    <FlatList data={CARGA.items} renderItem={this.renderItem} keyExtractor={item => item.id.toString()} />
+                    <FlatList data={this.props.carga.items} extraData={this.props.carga} renderItem={this.renderItem} keyExtractor={item => item.envase.id.toString()} />
                 </List>
                 <Button icon={{ name: 'ios-add-circle-outline', type: 'ionicon', size: 26 }} containerViewStyle={{ marginBottom: 20 }} backgroundColor='#0067AC' borderRadius={5} onPress={this.onAgregarPress} />
             </View>
@@ -116,3 +84,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
     }
 });
+
+const mapStateToProps = (state) => ({ carga: state.carga });
+
+export default connect(mapStateToProps)(CargaDetalleScreen);

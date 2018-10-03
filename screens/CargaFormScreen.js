@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements'
+import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+
+import { addItem } from '../redux/actions/cargas.actions';
 
 const hojas = [
     { id: 1, chofer: 'Maximiliano Bisurgi' },
@@ -11,7 +14,7 @@ const hojas = [
     { id: 6, chofer: 'Claudio Sabella' },
 ]
 
-export default class CargaFormScreen extends React.Component {
+class CargaFormScreen extends React.Component {
     state = {
         lleno: '0',
         vacio: '0',
@@ -23,8 +26,24 @@ export default class CargaFormScreen extends React.Component {
         headerBackTitle: null
     };
 
-    onAgregarPress = (item) => {
+    onAgregarPress = () => {
+        this.props.addItem(this.createItem());
         this.props.navigation.navigate('Detalle');
+    };
+
+    createItem = () => {
+        const envase = this.props.navigation.getParam('envase');
+        const item = {
+            envase,
+            lleno: isNaN(parseInt(this.state.lleno, 10)) ? 0 : parseInt(this.state.lleno, 10),
+            vacio: isNaN(parseInt(this.state.vacio, 10)) ? 0 : parseInt(this.state.vacio, 10),
+            averiado: isNaN(parseInt(this.state.averiado, 10)) ? 0 : parseInt(this.state.averiado, 10),
+            retiro: 0,
+            entrega: 0,
+            cambio: 0
+        };
+
+        return item;
     };
 
     render() {
@@ -50,6 +69,7 @@ const styles = StyleSheet.create({
     label: {
         color: '#0067AC',
         fontWeight: 'bold'
-    },
-
+    }
 });
+
+export default connect(null, { addItem })(CargaFormScreen);

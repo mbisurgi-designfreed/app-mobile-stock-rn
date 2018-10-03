@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
+import { Provider } from 'react-redux'
+
+import store from './redux/store/store';
 
 import HomeScreen from './screens/HomeScreen';
 import CargaScreen from './screens/CargaScreen';
@@ -11,7 +14,9 @@ import CargaFormScreen from './screens/CargaFormScreen';
 export default class App extends React.Component {
     render() {
         return (
-            <AppStackNavigator />
+            <Provider store={store}>
+                <AppStackNavigator />
+            </Provider>
         );
     }
 }
@@ -24,13 +29,13 @@ const AppStackNavigator = createStackNavigator({
         screen: CargaScreen
     },
     Detalle: {
-      screen: CargaDetalleScreen
+        screen: CargaDetalleScreen
     },
     Envases: {
-      screen: CargaEnvaseScreen
+        screen: CargaEnvaseScreen
     },
     Form: {
-      screen: CargaFormScreen
+        screen: CargaFormScreen
     }
 })
 
